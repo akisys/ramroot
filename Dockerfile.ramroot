@@ -1,0 +1,41 @@
+FROM ubuntu:16.04
+
+# Prevent dpkg from asking questions
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Install ifupdown, so DNS will work in the booted system
+RUN apt-get update \
+    && apt-get -y dist-upgrade \
+    && apt-get -y install \
+        ifupdown \
+        cloud-init \
+        net-tools \
+        iputils-ping \
+        sudo \
+        tzdata \
+        locales \
+    && apt-get clean all
+
+# Set the locale
+RUN set -ex \
+    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+    && locale-gen
+
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+ENV TZ=UTC
+RUN set -ex \
+    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
+
+#RUN set -ex \
+#    && touch /etc/cloud/cloud-init.disabled
+
+RUN set -ex \
+    && rm /etc/cloud/cloud.cfg.d/90_dpkg.cfg
+
+COPY config/cloud-init.yml /etc/cloud/cloud.cfg
+
+# Unset the root password
+RUN passwd -d root

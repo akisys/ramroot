@@ -63,7 +63,7 @@ networking to work smootly both during and after booting.
 
 ## Creating the initrd using Docker
 
-See [Dockerfile.kernel-example](Dockerfile.kernel-example) for an example
+See [Dockerfile.kernel-example](Dockerfile.kernel) for an example
 Dockerfile for generating an initrd image.
 
 To generate the initrd and extract it from the docker image, you can use or
@@ -85,7 +85,7 @@ You can customize the Dockerfile if you need more included in your initrd.
 
 To create a Ramroot image using Docker, simply create a docker image and
 convert it using docker-to-ramroot in the tools folder. See
-[Dockerfile.ramroot-example](Dockerfile.ramroot-example) for a bare-bones image
+[Dockerfile.ramroot-example](Dockerfile.ramroot) for a bare-bones image
 based on the official ubuntu:16.04 image:
 
 ```bash
@@ -106,5 +106,5 @@ scripts in the end of the initrd execution, add them to
 `/etc/initramfs-tools/scripts/ramdisk-bottom`. A few scripts for kernel and
 network configuration are already provided.
 
-# Licence
+# License
 Ramroot is released under the MIT licence.

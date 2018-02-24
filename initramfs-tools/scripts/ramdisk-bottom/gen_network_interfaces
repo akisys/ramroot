@@ -9,6 +9,7 @@ if [ "$1" = "prereqs" ]; then
 	exit 0
 fi
 
+# This requires the 'IPAPPEND 2' option line in the PXE config block
 if [ -n "$BOOTIF" ] && [ -z "$(ls ${rootmnt}/etc/network/interfaces.d)" ]; then
 	bootif_mac="$(echo "${BOOTIF#01-}" | busybox tr - :)"
 	# look for devices with matching mac address, and set DEVICE to
