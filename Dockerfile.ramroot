@@ -12,8 +12,14 @@ RUN apt-get update \
         net-tools \
         iputils-ping \
         sudo \
+        vim-tiny \
         tzdata \
         locales \
+        rsyslog \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        software-properties-common \
     && apt-get clean all
 
 # Set the locale
@@ -35,6 +41,7 @@ RUN set -ex \
 RUN set -ex \
     && rm /etc/cloud/cloud.cfg.d/90_dpkg.cfg
 
+#COPY config/cloud-ds.yml /etc/cloud/cloud.cfg.d/90_dpkg.cfg
 COPY config/cloud-init.yml /etc/cloud/cloud.cfg
 
 # Unset the root password

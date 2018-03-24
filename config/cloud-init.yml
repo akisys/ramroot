@@ -1,9 +1,6 @@
 
 #datasource_list: [ NoCloud, ConfigDrive, OpenNebula, DigitalOcean, Azure, AltCloud, OVF, MAAS, GCE, OpenStack, CloudSigma, SmartOS, Bigstep, Scaleway, AliYun, Ec2, CloudStack, None ]
-
-datasource_list:
-  - NoCloud
-  - None
+datasource_list: [ NoCloud, None ]
 
 # A set of users which may be applied and/or used by various modules
 # when a 'default' entry is found it will reference the 'default_user'

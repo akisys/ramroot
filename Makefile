@@ -11,10 +11,10 @@ SYSTEM_IMAGE := ramroot
 
 MKDIR_P := mkdir -p
 
-.PHONY: package kernel-extract kernel-image system-extract system-image run-kernel
+.PHONY: package package-kernel kernel-image package-system system-image run-kernel run-system
 
 
-package: kernel-extract system-extract
+package: package-kernel package-system
 
 kernel-image:
 	docker build -f $(KERNEL_DOCKERFILE) -t $(KERNEL_IMAGE) .
@@ -23,14 +23,16 @@ system-image:
 	docker build -f $(RAMROOT_DOCKERFILE) -t $(SYSTEM_IMAGE) .
 
 
-kernel-extract: kernel-image
+.ONESHELL:
+package-kernel: kernel-image
 	$(MKDIR_P) $(BUILDDIR)
 	docker run --rm -v $(BUILDDIR):/host $(KERNEL_IMAGE) bash -c "cp -v /boot/initrd.img-* /boot/vmlinuz-* /host; chown $(UID):$(GID) /host/{vmlinuz,initrd.img}-*"
 	mv $(BUILDDIR)/vmlinuz-* $(BUILDDIR)/vmlinuz
 	mv $(BUILDDIR)/initrd.img-* $(BUILDDIR)/initrd
 	chmod 644 $(BUILDDIR)/*
 
-system-extract: system-image
+.ONESHELL:
+package-system: system-image
 	$(MKDIR_P) $(BUILDDIR)
 	tools/docker-to-ramroot $(SYSTEM_IMAGE) $(BUILDDIR)/ramroot.tar.xz
 
